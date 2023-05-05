@@ -1,0 +1,50 @@
+div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5em;
+}
+
+.project-desc {
+  font-family: 'Courier New', Courier, monospace;
+  width: 402px;
+
+  #title {
+    font-weight: bold;
+    font-size: 1.2em; /* Increase title font size for emphasis */
+    margin-bottom: 0.5em; /* Add some spacing below the title */
+  }
+  
+  #intro {
+    margin-bottom: 2em;
+    font-size: 0.9em; /* Increase font size for better readability */
+    text-align: center; /* Center the intro text */
+  }
+}
+
+button {
+  background-color: transparent;
+  border: transparent;
+}
+
+mat-form-field {
+  width: 402px;
+}
+
+mat-icon-button {
+  margin-left: -2em;
+}
+
+.error-msg {
+  font-size: 0.8em;
+  color: red;
+  margin-top: 0.5em;
+}
+
+.type-guide-msg {
+  font-size: 0.8em;
+  color: var(--primary--color);
+  margin-top: 0.5em;
+  font-style: italic;
+}

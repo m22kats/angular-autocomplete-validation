@@ -1,0 +1,60 @@
+<div>
+  <div class="project-desc">
+    <div id="title">
+      Angular Material Autocomplete
+    </div>
+    <div id="intro">
+      Please select a valid option from the autocomplete suggestion list.
+      <br><br>
+      Keywords: Object autocomplete, Autocomplete validation, Form group, Form control
+    </div>
+  </div>
+  <form [formGroup]="formGroup">
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <input
+        formControlName="typeCtrl"
+        placeholder="Select a type"
+        [matAutocomplete]="autoType"
+        matInput
+        type="text"
+        required
+      />
+      <button
+        (click)="resetType()"
+        *ngIf="this.formGroup.controls['typeCtrl'].value?.title?.length > 0"
+        aria-label="Clear"
+        mat-icon-button
+        matSuffix
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-autocomplete
+        #autoType="matAutocomplete"
+        [displayWith]="getOptionTitle"
+      >
+        <mat-option
+          *ngFor="let type of filteredTypeOptions | async"
+          [value]="type"
+          (onSelectionChange)="onTypeChange()"
+        >
+          {{ type.title }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <div
+      class="type-guide-msg"
+      *ngIf="
+        this.formGroup.controls['typeCtrl'].value.description;
+        else mustSelectBlock
+      "
+    >
+      {{ this.formGroup.controls['typeCtrl'].value.description }}
+    </div>
+    <ng-template #mustSelectBlock>
+      <div class="error-msg">
+        Please select a type from the autocomplete list.
+      </div>
+    </ng-template>
+  </form>
+</div>

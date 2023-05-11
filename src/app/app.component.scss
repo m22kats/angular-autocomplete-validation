@@ -15,7 +15,7 @@ div {
     font-size: 1.2em; /* Increase title font size for emphasis */
     margin-bottom: 0.5em; /* Add some spacing below the title */
   }
-  
+
   #intro {
     margin-bottom: 2em;
     font-size: 0.9em; /* Increase font size for better readability */
@@ -47,4 +47,12 @@ mat-icon-button {
   color: var(--primary--color);
   margin-top: 0.5em;
   font-style: italic;
+}
+
+.btn-container {
+  margin: 2em 0em 0em 0em;
+
+  #new-btn {
+    width: 402px;
+  }
 }

@@ -1,12 +1,11 @@
 <div>
   <div class="project-desc">
-    <div id="title">
-      Angular Material Autocomplete
-    </div>
+    <div id="title"> Angular Material Autocomplete </div>
     <div id="intro">
       Please select a valid option from the autocomplete suggestion list.
-      <br><br>
-      Keywords: Object autocomplete, Autocomplete validation, Form group, Form control
+      <br /><br />
+      Keywords: Object autocomplete, Autocomplete validation, Form group, Form
+      control
     </div>
   </div>
   <form [formGroup]="formGroup">
@@ -57,4 +56,14 @@
       </div>
     </ng-template>
   </form>
+  <div class="btn-container">
+    <button
+      mat-flat-button
+      color="primary"
+      id="new-btn"
+      (click)="openFormArrDialog()"
+    >
+      Add New Link
+    </button>
+  </div>
 </div>

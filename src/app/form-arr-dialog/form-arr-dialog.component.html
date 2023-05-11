@@ -1,0 +1,106 @@
+<div class="container">
+  <form [formGroup]="fg">
+    <div formArrayName="typeGroups">
+      <mat-accordion>
+        <mat-expansion-panel
+          *ngFor="let type of typeGroups()?.controls; let idx = index"
+          [formGroupName]="idx"
+          [expanded]="idx === currentPanelIndex"
+          (opened)="onPanelOpen(idx)"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title> Type {{ idx + 1 }} </mat-panel-title>
+            <mat-panel-description>
+              <mat-icon
+                class="delete-icon"
+                (click)="removeTypeAt(idx)"
+                *ngIf="typeGroups().length > 1"
+              >
+                delete
+              </mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="container">
+            <mat-grid-list cols="1" rowHeight="90px">
+              <mat-grid-tile colspan="1">
+                <mat-form-field appearance="outline">
+                  <mat-label>Type</mat-label>
+                  <input
+                    formControlName="type"
+                    placeholder="Pick Type"
+                    [matAutocomplete]="autoType"
+                    matInput
+                    type="text"
+                    required
+                  />
+                  <button
+                    (click)="resetType()"
+                    *ngIf="isTitleSelected"
+                    aria-label="Clear"
+                    mat-icon-button
+                    matSuffix
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <mat-autocomplete
+                    #autoType="matAutocomplete"
+                    [displayWith]="getOptionText"
+                  >
+                    <mat-option
+                      *ngFor="let type of filteredTypeOptions | async"
+                      [value]="type"
+                      (onSelectionChange)="onTypeChange()"
+                    >
+                      {{ type.title }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </mat-grid-tile>
+            </mat-grid-list>
+            <div
+              class="type-guide-msg"
+              *ngIf="
+                this.typeGroups()?.at(this.currentPanelIndex).get('type').value
+                  .description;
+                else mustSelectBlock
+              "
+            >
+              {{
+                this.typeGroups()?.at(this.currentPanelIndex).get('type').value
+                  .description
+              }}
+            </div>
+            <ng-template #mustSelectBlock>
+              <div class="error-msg">
+                Please select a type from the autocomplete list.
+              </div>
+            </ng-template>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </form>
+</div>
+
+<div class="button-container">
+  <mat-icon
+    class="add-button"
+    (click)="this.addType()"
+    *ngIf="fg.get('typeGroups').valid"
+  >
+    add_box
+  </mat-icon>
+  <div class="spacer"></div>
+  <button mat-stroked-button class="action-button" (click)="onCancelClick()">
+    Cancel
+  </button>
+  <button
+    mat-flat-button
+    color="primary"
+    class="action-button"
+    (click)="onCreateClick()"
+    [disabled]="!fg.get('typeGroups').valid"
+  >
+    Create
+  </button>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -11,10 +11,19 @@ import { typeValidator } from '../utils/type.validators';
   templateUrl: './form-arr-dialog.component.html',
   styleUrls: ['./form-arr-dialog.component.scss'],
 })
-export class FormArrDialogComponent implements OnInit {
+export class FormArrDialogComponent implements OnInit, OnDestroy {
   @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger;
   private readonly destroy$ = new Subject<void>();
   filteredTypeOptions!: Observable<Type[]>;
+
+  private filterTypes(value: string | Type): Type[] {
+    if (typeof value === 'string') {
+      return this._filterTypes(value);
+    } else {
+      return this._filterTypes(value.title);
+    }
+  }
+
   private _filterTypes(type: string): Type[] {
     let filterValue = '';
     if (!!type) {
@@ -54,13 +63,7 @@ export class FormArrDialogComponent implements OnInit {
       .valueChanges.pipe(
         takeUntil(this.destroy$),
         startWith(''),
-        map((value: string | Type) => {
-          if (typeof value === 'string') {
-            return this._filterTypes(value);
-          } else {
-            return this._filterTypes(value.title);
-          }
-        })
+        map((value: string | Type) => this.filterTypes(value))
       );
   }
 

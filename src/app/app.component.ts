@@ -30,6 +30,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger;
   private readonly destroy$ = new Subject<void>();
 
+  private _filterTypes(value: string | Type): Type[] {
+    const filterValue =
+      typeof value === 'string'
+        ? value.toLowerCase()
+        : value.title.toLowerCase();
+    return types.filter((option) =>
+      option.title.toLowerCase().includes(filterValue)
+    );
+  }
+
   formGroup!: FormGroup;
   typeCtrl: FormControl = new FormControl();
   filteredTypeOptions!: Observable<Type[]>;
@@ -56,16 +66,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private _filterTypes(value: string | Type): Type[] {
-    const filterValue =
-      typeof value === 'string'
-        ? value.toLowerCase()
-        : value.title.toLowerCase();
-    return types.filter((option) =>
-      option.title.toLowerCase().includes(filterValue)
-    );
   }
 
   setFilteredTypeOptions(): void {

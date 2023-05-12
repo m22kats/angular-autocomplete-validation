@@ -39,7 +39,6 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
   currentPanelIndex: number = 0;
   currentControl = this.typeGroups()?.at(this.currentPanelIndex);
   typeControl = this.currentControl?.get('type');
-  isTitleSelected: boolean = false;
   tooltipText: string = 'Check console log after create';
 
   constructor(
@@ -90,7 +89,6 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
       ?.at(this.currentPanelIndex)
       .get('type')
       .reset(new Type('', '', ''));
-    this.isTitleSelected = false;
   }
 
   addType(): void {
@@ -108,7 +106,6 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
       .at(this.currentPanelIndex)
       .get('type')
       .setValidators([Validators.required, typeValidator(types).bind(this)]);
-    this.isTitleSelected = true;
   }
 
   getOptionText(option: Type) {
@@ -134,13 +131,6 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
   onPanelOpen(idx: number) {
     this.currentPanelIndex = idx;
     this.setFilteredTypeOptions();
-
-    // for close icon to clear input value
-    this.isTitleSelected = !!this.typeGroups()
-      .at(this.currentPanelIndex)
-      .get('type').value.title;
-
-    // this demo doesn't require patch; but some cases of form arr, patch is needed
     this.typeGroups()
       .at(this.currentPanelIndex)
       .get('type')

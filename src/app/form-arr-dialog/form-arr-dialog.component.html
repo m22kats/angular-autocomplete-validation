@@ -36,7 +36,10 @@
                   />
                   <button
                     (click)="resetType()"
-                    *ngIf="isTitleSelected"
+                    *ngIf="
+                      !!this.typeGroups().at(this.currentPanelIndex).get('type')
+                        .value.title
+                    "
                     aria-label="Clear"
                     mat-icon-button
                     matSuffix

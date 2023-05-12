@@ -1,7 +1,7 @@
 <div class="container">
   <form [formGroup]="fg">
     <div formArrayName="typeGroups">
-      <mat-accordion>
+      <mat-accordion [@.disabled]="true">
         <mat-expansion-panel
           *ngFor="let type of typeGroups()?.controls; let idx = index"
           [formGroupName]="idx"

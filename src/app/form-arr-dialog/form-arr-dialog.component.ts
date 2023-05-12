@@ -52,6 +52,7 @@ export class FormArrDialogComponent implements OnInit {
       .at(this.currentPanelIndex)
       .get('type')
       .valueChanges.pipe(
+        takeUntil(this.destroy$),
         startWith(''),
         map((value: string | Type) => {
           if (typeof value === 'string') {
@@ -59,8 +60,7 @@ export class FormArrDialogComponent implements OnInit {
           } else {
             return this._filterTypes(value.title);
           }
-        }),
-        takeUntil(this.destroy$)
+        })
       );
   }
 
@@ -130,6 +130,22 @@ export class FormArrDialogComponent implements OnInit {
   onPanelOpen(idx: number) {
     this.currentPanelIndex = idx;
     this.setFilteredTypeOptions();
+
+    // for close icon to clear input value
+    this.isTitleSelected = !!this.typeGroups()
+      .at(this.currentPanelIndex)
+      .get('type').value.title;
+
+    // this demo doesn't require patch; but some cases of form arr, patch is needed
+    this.typeGroups()
+      .at(this.currentPanelIndex)
+      .get('type')
+      .patchValue(
+        this.typeGroups().at(this.currentPanelIndex).get('type').value,
+        {
+          emitEvent: true,
+        }
+      );
   }
 }
 

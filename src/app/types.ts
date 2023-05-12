@@ -1,9 +1,3 @@
-export interface Type {
-  key: string;
-  title: string;
-  description: string;
-}
-
 export class Type {
   key: string = '';
   title: string = '';

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,7 +12,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, Subject, map, startWith, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import {
   DialogOutput,
@@ -20,8 +26,10 @@ import { typeValidator } from './utils/type.validators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger;
+  private readonly destroy$ = new Subject<void>();
+
   formGroup!: FormGroup;
   typeCtrl: FormControl = new FormControl();
   filteredTypeOptions!: Observable<Type[]>;
@@ -45,6 +53,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   private _filterTypes(value: string | Type): Type[] {
     const filterValue =
       typeof value === 'string'
@@ -59,6 +72,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.filteredTypeOptions = this.formGroup.controls[
       'typeCtrl'
     ].valueChanges.pipe(
+      takeUntil(this.destroy$),
       startWith(''),
       map((value) => this._filterTypes(value))
     );

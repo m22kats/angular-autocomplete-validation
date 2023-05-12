@@ -1,4 +1,5 @@
 <div class="container">
+  <div id="title"> Form Array Autocomplete </div>
   <form [formGroup]="fg">
     <div formArrayName="typeGroups">
       <mat-accordion [@.disabled]="true">
@@ -100,6 +101,7 @@
     class="action-button"
     (click)="onCreateClick()"
     [disabled]="!fg.get('typeGroups').valid"
+    [matTooltip]="tooltipText"
   >
     Create
   </button>

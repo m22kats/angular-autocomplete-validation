@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormArrDialogComponent } from './form-arr-dialog/form-arr-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [AppComponent, FormArrDialogComponent],
@@ -31,6 +32,7 @@ import { FormArrDialogComponent } from './form-arr-dialog/form-arr-dialog.compon
     MatDialogModule,
     MatExpansionModule,
     MatGridListModule,
+    MatTooltipModule,
   ],
   providers: [MatIconRegistry],
   bootstrap: [AppComponent],

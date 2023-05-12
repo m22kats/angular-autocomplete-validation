@@ -40,6 +40,7 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
   currentControl = this.typeGroups()?.at(this.currentPanelIndex);
   typeControl = this.currentControl?.get('type');
   isTitleSelected: boolean = false;
+  tooltipText: string = 'Check console log after create';
 
   constructor(
     public dialogRef: MatDialogRef<FormArrDialogComponent>,

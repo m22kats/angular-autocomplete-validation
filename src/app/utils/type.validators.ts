@@ -3,20 +3,20 @@ import { Type } from '../types';
 
 export function typeValidator(types: Type[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    const selectedLType = control.value as Type;
+    const selectedType = control.value as Type;
 
     let isValid = !(
-      !selectedLType ||
-      selectedLType.title === '' ||
-      selectedLType.description === ''
+      !selectedType ||
+      selectedType.title === '' ||
+      selectedType.description === ''
     );
 
     if (isValid) {
       isValid = !!types.find((type) => {
         return (
-          type.key === selectedLType.key &&
-          type.title === selectedLType.title &&
-          type.description === selectedLType.description
+          type.key === selectedType.key &&
+          type.title === selectedType.title &&
+          type.description === selectedType.description
         );
       });
     }

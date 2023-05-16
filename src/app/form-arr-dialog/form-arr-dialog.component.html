@@ -1,10 +1,10 @@
 <div class="container">
   <div id="title"> Form Array Autocomplete </div>
   <form [formGroup]="fg">
-    <div formArrayName="typeGroups">
+    <div formArrayName="typeArr">
       <mat-accordion [@.disabled]="true">
         <mat-expansion-panel
-          *ngFor="let type of typeGroups()?.controls; let idx = index"
+          *ngFor="let typeItem of typeArr()?.controls; let idx = index"
           [formGroupName]="idx"
           [expanded]="idx === currentPanelIndex"
           (opened)="onPanelOpen(idx)"
@@ -15,7 +15,7 @@
               <mat-icon
                 class="delete-icon"
                 (click)="removeTypeAt(idx)"
-                *ngIf="typeGroups().length > 1"
+                *ngIf="typeArr().length > 1"
               >
                 delete
               </mat-icon>
@@ -36,10 +36,7 @@
                   />
                   <button
                     (click)="resetType()"
-                    *ngIf="
-                      !!this.typeGroups().at(this.currentPanelIndex).get('type')
-                        .value.title
-                    "
+                    *ngIf="!!typeItem.get('type').value.title"
                     aria-label="Clear"
                     mat-icon-button
                     matSuffix
@@ -64,15 +61,11 @@
             <div
               class="type-guide-msg"
               *ngIf="
-                this.typeGroups()?.at(this.currentPanelIndex).get('type').value
-                  .description;
+                typeItem.get('type').value.description;
                 else mustSelectBlock
               "
             >
-              {{
-                this.typeGroups()?.at(this.currentPanelIndex).get('type').value
-                  .description
-              }}
+              {{ typeItem.get('type').value.description }}
             </div>
             <ng-template #mustSelectBlock>
               <div class="error-msg">
@@ -90,7 +83,7 @@
   <mat-icon
     class="add-button"
     (click)="this.addType()"
-    *ngIf="fg.get('typeGroups').valid"
+    *ngIf="fg.get('typeArr').valid"
   >
     add_box
   </mat-icon>
@@ -103,7 +96,7 @@
     color="primary"
     class="action-button"
     (click)="onCreateClick()"
-    [disabled]="!fg.get('typeGroups').valid"
+    [disabled]="!fg.get('typeArr').valid"
     [matTooltip]="tooltipText"
   >
     Create

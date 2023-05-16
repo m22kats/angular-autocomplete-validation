@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Observable, Subject, map, startWith, takeUntil } from 'rxjs';
 import { Type, types } from '../types';
 import { typeValidator } from '../utils/type.validators';
@@ -12,7 +11,6 @@ import { typeValidator } from '../utils/type.validators';
   styleUrls: ['./form-arr-dialog.component.scss'],
 })
 export class FormArrDialogComponent implements OnInit, OnDestroy {
-  @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger;
   private readonly destroy$ = new Subject<void>();
   filteredTypeOptions!: Observable<Type[]>;
 
@@ -37,7 +35,7 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
   fg: FormGroup = new FormGroup({});
   typeCreate: Type = new Type('', '', '');
   currentPanelIndex: number = 0;
-  currentControl = this.typeGroups()?.at(this.currentPanelIndex);
+  currentControl = this.typeArr()?.at(this.currentPanelIndex);
   typeControl = this.currentControl?.get('type');
   tooltipText: string = 'Check console log after create';
 
@@ -57,7 +55,7 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
   }
 
   setFilteredTypeOptions(): void {
-    this.filteredTypeOptions = this.typeGroups()
+    this.filteredTypeOptions = this.typeArr()
       .at(this.currentPanelIndex)
       .get('type')
       .valueChanges.pipe(
@@ -69,13 +67,13 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
 
   initializeForm(): void {
     this.fg = this.formBuilder.group({
-      typeGroups: this.formBuilder.array([]),
+      typeArr: this.formBuilder.array([]),
     });
     this.addType();
   }
 
-  typeGroups(): FormArray {
-    return this.fg.get('typeGroups') as FormArray;
+  typeArr(): FormArray {
+    return this.fg.get('typeArr') as FormArray;
   }
 
   newType(): FormGroup {
@@ -85,24 +83,24 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
   }
 
   resetType(): void {
-    this.typeGroups()
+    this.typeArr()
       ?.at(this.currentPanelIndex)
       .get('type')
       .reset(new Type('', '', ''));
   }
 
   addType(): void {
-    this.typeGroups().push(this.newType());
+    this.typeArr().push(this.newType());
   }
 
   removeTypeAt(index: number): void {
-    this.typeGroups().removeAt(index);
+    this.typeArr().removeAt(index);
     this.currentPanelIndex--;
   }
 
   onTypeChange() {
-    this.typeGroups().at(this.currentPanelIndex).get('type').setErrors(null);
-    this.typeGroups()
+    this.typeArr().at(this.currentPanelIndex).get('type').setErrors(null);
+    this.typeArr()
       .at(this.currentPanelIndex)
       .get('type')
       .setValidators([Validators.required, typeValidator(types).bind(this)]);
@@ -120,7 +118,7 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
   }
 
   onCreateClick(): void {
-    const typeCreateRequests: Type[] = this.typeGroups().value;
+    const typeCreateRequests: Type[] = this.typeArr().value;
     const output: DialogOutput = {
       action: 'confirm',
       typeCreateRequests: typeCreateRequests,
@@ -131,15 +129,12 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
   onPanelOpen(idx: number) {
     this.currentPanelIndex = idx;
     this.setFilteredTypeOptions();
-    this.typeGroups()
+    this.typeArr()
       .at(this.currentPanelIndex)
       .get('type')
-      .patchValue(
-        this.typeGroups().at(this.currentPanelIndex).get('type').value,
-        {
-          emitEvent: true,
-        }
-      );
+      .patchValue(this.typeArr().at(this.currentPanelIndex).get('type').value, {
+        emitEvent: true,
+      });
   }
 }
 

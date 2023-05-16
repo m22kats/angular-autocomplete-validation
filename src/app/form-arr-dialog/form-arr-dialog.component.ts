@@ -36,7 +36,6 @@ export class FormArrDialogComponent implements OnInit, OnDestroy {
   typeCreate: Type = new Type('', '', '');
   currentPanelIndex: number = 0;
   currentControl = this.typeArr()?.at(this.currentPanelIndex);
-  typeControl = this.currentControl?.get('type');
   tooltipText: string = 'Check console log after create';
 
   constructor(
